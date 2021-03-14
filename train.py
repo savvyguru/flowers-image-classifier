@@ -5,7 +5,7 @@ from model_ic import NN_Classifier, validation, make_NN, save_checkpoint
 parser = argparse.ArgumentParser(description="Train image classifier model")
 parser.add_argument("data_dir", help="load data directory")
 parser.add_argument("--category_names", default="cat_to_name.json", help="choose category names")
-parser.add_argument("--arch", default="vgg16", help="choose model architecture")
+parser.add_argument("--arch", default="mobilenet_v2", help="choose model architecture")
 parser.add_argument("--learning_rate", type=int, default=0.001, help="set learning rate")
 parser.add_argument("--hidden_units", type=int, default=1024, help="set hidden units")
 parser.add_argument("--epochs", type=int, default=1, help="set epochs")
