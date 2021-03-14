@@ -134,14 +134,14 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
                 model.train()
     
     # Add model info 
-    model.classifier.n_in = n_in
-    model.classifier.n_hidden = n_hidden
-    model.classifier.n_out = n_out
-    model.classifier.labelsdict = labelsdict
-    model.classifier.lr = lr
-    model.classifier.optimizer_state_dict = optimizer.state_dict
-    model.classifier.model_name = model_name
-    model.classifier.class_to_idx = train_data.class_to_idx
+    model.fc.n_in = n_in
+    model.fc.n_hidden = n_hidden
+    model.fc.n_out = n_out
+    model.fc.labelsdict = labelsdict
+    model.fc.lr = lr
+    model.optimizer_state_dict = optimizer.state_dict
+    model.model_name = model_name
+    model.class_to_idx = train_data.class_to_idx
     
     print('model:', model_name, '- hidden layers:', n_hidden, '- epochs:', n_epoch, '- lr:', lr)
     print(f"Run time: {(time.time() - start)/60:.3f} min")
