@@ -63,7 +63,7 @@ def validation(model, testloader, criterion, device):
 
 # Define NN function
 def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data):
-    model_name = "vgg16"
+    model_name = "densenet169"
     print(model_name)
     # Import pre-trained NN model 
     model = getattr(models, model_name)(pretrained=True)
