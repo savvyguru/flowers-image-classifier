@@ -72,10 +72,10 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
     for param in model.parameters():
         param.requires_grad = False
         
-    # Make classifier
-    n_in = next(model.classifier.modules()).in_features
-    n_out = len(labelsdict) 
-    model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
+#     # Make classifier
+#     n_in = next(model.classifier.modules()).in_features
+#     n_out = len(labelsdict) 
+#     model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
     
     #model classifer
     fc_inputs = resnet50.fc.in_features
