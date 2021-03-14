@@ -63,10 +63,10 @@ def validation(model, testloader, criterion, device):
 
 # Define NN function
 def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data):
-    model_name = "densenet169"
-    print(model_name)
+    model_name = "resnet50"
     # Import pre-trained NN model 
-    model = getattr(models, model_name)(pretrained=True)
+    # Load pretrained ResNet50 Model
+    model = models.resnet50(pretrained=True)
     
     # Freeze parameters that we don't need to re-train 
     for param in model.parameters():
@@ -76,6 +76,17 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
     n_in = next(model.classifier.modules()).in_features
     n_out = len(labelsdict) 
     model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
+    
+    #model classifer
+    fc_inputs = resnet50.fc.in_features
+
+    model.fc = nn.Sequential(
+        nn.Linear(fc_inputs, 256),
+        nn.ReLU(),
+        nn.Dropout(0.4),
+        nn.Linear(256, 10), 
+        nn.LogSoftmax(dim=1) # For using NLLLoss()
+    )
     
     # Define criterion and optimizer
     criterion = nn.NLLLoss()
