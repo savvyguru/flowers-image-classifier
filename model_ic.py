@@ -64,6 +64,7 @@ def validation(model, testloader, criterion, device):
 # Define NN function
 def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data):
     model_name = "resnet50"
+    n_epoch = 5
     # Import pre-trained NN model 
     # Load pretrained ResNet50 Model
     model = models.resnet50(pretrained=True)
