@@ -63,8 +63,9 @@ def validation(model, testloader, criterion, device):
 
 # Define NN function
 def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data):
+    model_name = mobilenet_v2
     # Import pre-trained NN model 
-    model = getattr(models, mobilenet_v2)(pretrained=True)
+    model = getattr(models, model_name)(pretrained=True)
     
     # Freeze parameters that we don't need to re-train 
     for param in model.parameters():
