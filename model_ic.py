@@ -78,7 +78,7 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
 #     model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
     
     #model classifer
-    fc_inputs = resnet50.fc.in_features
+    fc_inputs = model.fc.in_features
 
     model.fc = nn.Sequential(
         nn.Linear(fc_inputs, 256),
