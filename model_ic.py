@@ -73,7 +73,7 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
         param.requires_grad = False
         
 #     # Make classifier
-    n_in = next(model.classifier.modules()).in_features
+    n_in = next(model.fc.modules()).in_features
     n_out = len(labelsdict) 
 #     model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
     
