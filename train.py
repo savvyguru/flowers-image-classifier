@@ -8,7 +8,7 @@ parser.add_argument("--category_names", default="cat_to_name.json", help="choose
 parser.add_argument("--arch", default="mobilenet_v2", help="choose model architecture")
 parser.add_argument("--learning_rate", type=int, default=0.001, help="set learning rate")
 parser.add_argument("--hidden_units", type=int, default=1024, help="set hidden units")
-parser.add_argument("--epochs", type=int, default=5, help="set epochs")
+parser.add_argument("--epochs", type=int, default=1, help="set epochs")
 parser.add_argument("--gpu", action="store_const", const="cuda", default="cpu", help="use gpu")
 parser.add_argument("--save_dir", help="save model")
 
