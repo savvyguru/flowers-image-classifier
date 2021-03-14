@@ -63,37 +63,24 @@ def validation(model, testloader, criterion, device):
 
 # Define NN function
 def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data):
-    model_name = "resnet50"
     n_epoch = 5
     # Import pre-trained NN model 
-    # Load pretrained ResNet50 Model
-    model = models.resnet50(pretrained=True)
+    model = getattr(models, model_name)(pretrained=True)
     
     # Freeze parameters that we don't need to re-train 
     for param in model.parameters():
         param.requires_grad = False
         
-#     # Make classifier
-    n_in = next(model.fc.modules()).in_features
+    # Make classifier
+    n_in = next(model.classifier.modules()).in_features
     n_out = len(labelsdict) 
-#     model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
-    
-    #model classifer
-    fc_inputs = model.fc.in_features
-
-    model.fc = nn.Sequential(
-        nn.Linear(fc_inputs, 256),
-        nn.ReLU(),
-        nn.Dropout(0.4),
-        nn.Linear(256, n_out), 
-        nn.LogSoftmax(dim=1) # For using NLLLoss()
-    )
+    model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
     
     # Define criterion and optimizer
     criterion = nn.NLLLoss()
-    optimizer = optim.Adam(model.parameters(), lr = lr)
+    optimizer = optim.Adam(model.classifier.parameters(), lr = lr)
 
-    model.to('cuda:0')
+    model.to(device)
     start = time.time()
 
     epochs = n_epoch
@@ -135,14 +122,14 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
                 model.train()
     
     # Add model info 
-    model.fc.n_in = n_in
-    model.fc.n_hidden = n_hidden
-    model.fc.n_out = n_out
-    model.fc.labelsdict = labelsdict
-    model.fc.lr = lr
-    model.optimizer_state_dict = optimizer.state_dict
-    model.model_name = model_name
-    model.class_to_idx = train_data.class_to_idx
+    model.classifier.n_in = n_in
+    model.classifier.n_hidden = n_hidden
+    model.classifier.n_out = n_out
+    model.classifier.labelsdict = labelsdict
+    model.classifier.lr = lr
+    model.classifier.optimizer_state_dict = optimizer.state_dict
+    model.classifier.model_name = model_name
+    model.classifier.class_to_idx = train_data.class_to_idx
     
     print('model:', model_name, '- hidden layers:', n_hidden, '- epochs:', n_epoch, '- lr:', lr)
     print(f"Run time: {(time.time() - start)/60:.3f} min")
