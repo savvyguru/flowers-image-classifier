@@ -92,7 +92,7 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
     criterion = nn.NLLLoss()
     optimizer = optim.Adam(model.parameters(), lr = lr)
 
-    model.to(device)
+    model.to('cuda:0')
     start = time.time()
 
     epochs = n_epoch
