@@ -84,7 +84,7 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
         nn.Linear(fc_inputs, 256),
         nn.ReLU(),
         nn.Dropout(0.4),
-        nn.Linear(256, 10), 
+        nn.Linear(256, n_out), 
         nn.LogSoftmax(dim=1) # For using NLLLoss()
     )
     
