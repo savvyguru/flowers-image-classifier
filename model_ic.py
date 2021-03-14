@@ -67,11 +67,11 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
     n_epoch = 5
     # Import pre-trained NN model 
     # Load pretrained ResNet50 Model
-    model = models.resnet50(pretrained=True)
+    model = models.resnet50(pretrained=False)
     
     # Freeze parameters that we don't need to re-train 
     for param in model.parameters():
-        param.requires_grad = False
+        param.requires_grad = True
         
 #     # Make classifier
     n_in = next(model.fc.modules()).in_features
