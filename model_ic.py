@@ -102,7 +102,7 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
 #     model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
     
 #     # Define criterion and optimizer
-#     criterion = nn.NLLLoss()
+    criterion = nn.NLLLoss()
 #     optimizer = optim.Adam(model.classifier.parameters(), lr = lr)
 
     start = time.time()
