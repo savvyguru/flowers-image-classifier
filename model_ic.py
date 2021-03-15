@@ -71,6 +71,18 @@ def validation(model, testloader, criterion, device):
 
 # Define NN function
 def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data,testloader):
+    class args:
+      batch_size = 64 #'input batch size for training (default: 64)')
+      test_batch_size = 1000 #'input batch size for testing (default: 1000)')
+      epochs = 14 #'number of epochs to train (default: 14)')
+      lr = 1.0 #'learning rate (default: 1.0)')
+      gamma = 0.7 #'Learning rate step gamma (default: 0.7)')
+      no_cuda = False #'disables CUDA training')
+      dry_run = False #'quickly check a single pass')
+      seed = 1 #'random seed (default: 1)')
+      log_interval = 100 #'how many batches to wait before logging training status')
+      save_model = False #'For Saving the current Model')
+        
     n_epoch = 5
     model = NN_Classifier().to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
