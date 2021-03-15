@@ -79,7 +79,7 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
     
     # Define criterion and optimizer
     criterion = nn.NLLLoss()
-    optimizer = optim.Adam(model.parameters(), lr = lr)
+#     optimizer = optim.Adam(model.parameters(), lr = lr)
 
     model.to(device)
     start = time.time()
@@ -95,12 +95,12 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
 
             steps += 1
 
-            optimizer.zero_grad()
+#             optimizer.zero_grad()
 
             output = model.forward(images)
             loss = criterion(output, labels)
             loss.backward()
-            optimizer.step()
+#             optimizer.step()
 
             running_loss += loss.item()
 
