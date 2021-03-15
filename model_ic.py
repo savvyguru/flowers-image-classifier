@@ -72,14 +72,14 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
     for param in model.parameters():
         param.requires_grad = True
         
-    # Make classifier
+#     Make classifier
 #     n_in = next(model.classifier.modules()).in_features
 #     n_out = len(labelsdict) 
 #     model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
     
     # Define criterion and optimizer
     criterion = nn.NLLLoss()
-    optimizer = optim.Adam(model.classifier.parameters(), lr = lr)
+    optimizer = optim.Adam(model.parameters(), lr = lr)
 
     model.to(device)
     start = time.time()
