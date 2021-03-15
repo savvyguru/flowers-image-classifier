@@ -5,7 +5,7 @@ from collections import OrderedDict
 
 import torch
 from torch import nn
-from torch import optim
+import torch.optim as optim
 import torch.nn.functional as F
 from torchvision import models
 
@@ -73,6 +73,7 @@ def validation(model, testloader, criterion, device):
 def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data,testloader):
     n_epoch = 5
     model = NN_Classifier().to(device)
+    optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
     
 #     model_name = "densenet169"
 #     # Import pre-trained NN model 
@@ -107,7 +108,8 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
             optimizer.zero_grad()
 
             output = model.forward(images)
-            loss = criterion(output, labels)
+            loss = F.nll_loss(output, labels)
+            #loss = criterion(output, labels)
             loss.backward()
             optimizer.step()
 
