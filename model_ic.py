@@ -63,8 +63,6 @@ def validation(model, testloader, criterion, device):
 
 # Define NN function
 def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data):
-    model_name = 'densenet169'
-    n_epoch = 5
     # Import pre-trained NN model 
     model = getattr(models, model_name)(pretrained=True)
     
@@ -72,14 +70,14 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
     for param in model.parameters():
         param.requires_grad = False
         
-#     Make classifier
-#     n_in = next(model.classifier.modules()).in_features
-#     n_out = len(labelsdict) 
-#     model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
+    # Make classifier
+    n_in = next(model.classifier.modules()).in_features
+    n_out = len(labelsdict) 
+    model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
     
     # Define criterion and optimizer
     criterion = nn.NLLLoss()
-    optimizer = optim.Adam(model.parameters(), lr = lr)
+    optimizer = optim.Adam(model.classifier.parameters(), lr = lr)
 
     model.to(device)
     start = time.time()
@@ -94,8 +92,8 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
             images, labels = images.to(device), labels.to(device)
 
             steps += 1
-            #comment out when needed
-            #optimizer.zero_grad()
+
+            optimizer.zero_grad()
 
             output = model.forward(images)
             loss = criterion(output, labels)
