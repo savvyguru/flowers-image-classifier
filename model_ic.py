@@ -1,3 +1,4 @@
+
 import numpy as np
 import time
 from collections import OrderedDict
@@ -63,23 +64,23 @@ def validation(model, testloader, criterion, device):
 
 # Define NN function
 def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data):
+    model_name = 'densenet169'
     n_epoch = 5
-    model_name = "densenet169"
     # Import pre-trained NN model 
     model = getattr(models, model_name)(pretrained=True)
     
     # Freeze parameters that we don't need to re-train 
     for param in model.parameters():
-        param.requires_grad = False
+        param.requires_grad = True
         
     # Make classifier
-#     n_in = next(model.classifier.modules()).in_features
-#     n_out = len(labelsdict) 
-#     model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
+    n_in = next(model.classifier.modules()).in_features
+    n_out = len(labelsdict) 
+    model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
     
     # Define criterion and optimizer
     criterion = nn.NLLLoss()
-#     optimizer = optim.Adam(model.parameters(), lr = lr)
+    optimizer = optim.Adam(model.classifier.parameters(), lr = lr)
 
     model.to(device)
     start = time.time()
@@ -95,12 +96,12 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
 
             steps += 1
 
-#             optimizer.zero_grad()
+            optimizer.zero_grad()
 
             output = model.forward(images)
             loss = criterion(output, labels)
             loss.backward()
-#             optimizer.step()
+            optimizer.step()
 
             running_loss += loss.item()
 
