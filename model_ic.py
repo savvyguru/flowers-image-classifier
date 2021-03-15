@@ -89,39 +89,39 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
     steps = 0 
     running_loss = 0
     print_every = 40
-    for e in range(epochs):
-        model.train()
-        for images, labels in trainloader:
-            images, labels = images.to(device), labels.to(device)
+#     for e in range(epochs):
+#         model.train()
+#         for images, labels in trainloader:
+#             images, labels = images.to(device), labels.to(device)
 
-            steps += 1
+#             steps += 1
 
-            optimizer.zero_grad()
+#             optimizer.zero_grad()
 
-            output = model.forward(images)
-            loss = criterion(output, labels)
-            loss.backward()
-            optimizer.step()
+#             output = model.forward(images)
+#             loss = criterion(output, labels)
+#             loss.backward()
+#             optimizer.step()
 
-            running_loss += loss.item()
+#             running_loss += loss.item()
 
-            if steps % print_every == 0:
-                # Eval mode for predictions
-                model.eval()
+#             if steps % print_every == 0:
+#                 # Eval mode for predictions
+#                 model.eval()
 
-                # Turn off gradients for validation
-                with torch.no_grad():
-                    test_loss, accuracy = validation(model, validloader, criterion, device)
+#                 # Turn off gradients for validation
+#                 with torch.no_grad():
+#                     test_loss, accuracy = validation(model, validloader, criterion, device)
 
-                print("Epoch: {}/{} - ".format(e+1, epochs),
-                      "Training Loss: {:.3f} - ".format(running_loss/print_every),
-                      "Validation Loss: {:.3f} - ".format(test_loss/len(validloader)),
-                      "Validation Accuracy: {:.3f}".format(accuracy/len(validloader)))
+#                 print("Epoch: {}/{} - ".format(e+1, epochs),
+#                       "Training Loss: {:.3f} - ".format(running_loss/print_every),
+#                       "Validation Loss: {:.3f} - ".format(test_loss/len(validloader)),
+#                       "Validation Accuracy: {:.3f}".format(accuracy/len(validloader)))
 
-                running_loss = 0
+#                 running_loss = 0
 
-                # Make sure training is back on
-                model.train()
+#                 # Make sure training is back on
+#                 model.train()
     #run on test set
     test_model(model, testloader, device='cuda')
     
