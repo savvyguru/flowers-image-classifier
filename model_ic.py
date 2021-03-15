@@ -84,7 +84,8 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
       save_model = False #'For Saving the current Model')
         
     n_epoch = 5
-    model = NN_Classifier().to(device)
+    n_out = len(labelsdict) 
+    model = NN_Classifier(n_out).to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
     
 #     model_name = "densenet169"
