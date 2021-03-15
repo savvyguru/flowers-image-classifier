@@ -1,3 +1,4 @@
+
 import numpy as np
 import time
 from collections import OrderedDict
@@ -62,7 +63,9 @@ def validation(model, testloader, criterion, device):
     return test_loss, accuracy
 
 # Define NN function
-def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, testloader, train_data):
+def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data,testloader):
+    n_epoch = 5
+    model_name = "densenet169"
     # Import pre-trained NN model 
     model = getattr(models, model_name)(pretrained=True)
     
@@ -108,18 +111,19 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
 
                 # Turn off gradients for validation
                 with torch.no_grad():
-#                     test_loss, accuracy = validation(model, validloader, criterion, device)
-                      test_model(model, testloader, device)
+                    test_loss, accuracy = validation(model, validloader, criterion, device)
 
-#                 print("Epoch: {}/{} - ".format(e+1, epochs),
-#                       "Training Loss: {:.3f} - ".format(running_loss/print_every),
-#                       "Validation Loss: {:.3f} - ".format(test_loss/len(validloader)),
-#                       "Validation Accuracy: {:.3f}".format(accuracy/len(validloader)))
+                print("Epoch: {}/{} - ".format(e+1, epochs),
+                      "Training Loss: {:.3f} - ".format(running_loss/print_every),
+                      "Validation Loss: {:.3f} - ".format(test_loss/len(validloader)),
+                      "Validation Accuracy: {:.3f}".format(accuracy/len(validloader)))
 
                 running_loss = 0
 
                 # Make sure training is back on
                 model.train()
+    #run on test set
+    test_model(model, testloader, device='cuda')
     
     # Add model info 
     model.classifier.n_in = n_in
