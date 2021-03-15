@@ -62,15 +62,13 @@ def validation(model, testloader, criterion, device):
     return test_loss, accuracy
 
 # Define NN function
-def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data):
-    model_name = 'densenet169'
-    n_epoch = 5
+def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, testloader, train_data):
     # Import pre-trained NN model 
-    model = getattr(models, model_name)(pretrained=False)
+    model = getattr(models, model_name)(pretrained=True)
     
     # Freeze parameters that we don't need to re-train 
     for param in model.parameters():
-        param.requires_grad = True
+        param.requires_grad = False
         
     # Make classifier
     n_in = next(model.classifier.modules()).in_features
@@ -79,7 +77,7 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
     
     # Define criterion and optimizer
     criterion = nn.NLLLoss()
-    optimizer = optim.Adam(model.parameters(), lr = lr)
+    optimizer = optim.Adam(model.classifier.parameters(), lr = lr)
 
     model.to(device)
     start = time.time()
@@ -110,12 +108,13 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
 
                 # Turn off gradients for validation
                 with torch.no_grad():
-                    test_loss, accuracy = validation(model, validloader, criterion, device)
+#                     test_loss, accuracy = validation(model, validloader, criterion, device)
+                      test_model(model, testloader, device)
 
-                print("Epoch: {}/{} - ".format(e+1, epochs),
-                      "Training Loss: {:.3f} - ".format(running_loss/print_every),
-                      "Validation Loss: {:.3f} - ".format(test_loss/len(validloader)),
-                      "Validation Accuracy: {:.3f}".format(accuracy/len(validloader)))
+#                 print("Epoch: {}/{} - ".format(e+1, epochs),
+#                       "Training Loss: {:.3f} - ".format(running_loss/print_every),
+#                       "Validation Loss: {:.3f} - ".format(test_loss/len(validloader)),
+#                       "Validation Accuracy: {:.3f}".format(accuracy/len(validloader)))
 
                 running_loss = 0
 
