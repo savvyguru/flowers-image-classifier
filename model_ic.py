@@ -24,9 +24,10 @@ class NN_Classifier(nn.Module):
         super(NN_Classifier, self).__init__()
         self.conv1 = nn.Conv2d(3, 32, 3, 1)
         self.conv2 = nn.Conv2d(32, 64, 3, 1)
+        self.conv3 = nn.Conv2d(64, 128, 3, 1)
         self.dropout1 = nn.Dropout(0.25)
         self.dropout2 = nn.Dropout(0.5)
-        self.fc1 = nn.Linear(774400, 128)
+        self.fc1 = nn.Linear(774400*2, 128)
         self.fc2 = nn.Linear(128, output_size)
         
     def forward(self, x):
