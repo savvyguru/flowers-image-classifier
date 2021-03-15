@@ -72,7 +72,7 @@ def validation(model, testloader, criterion, device):
 # Define NN function
 def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data,testloader):
     n_epoch = 5
-    model = NN_Classifier.to(device)
+    model = NN_Classifier().to(device)
     
 #     model_name = "densenet169"
 #     # Import pre-trained NN model 
