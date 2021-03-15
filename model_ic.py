@@ -66,11 +66,11 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
     model_name = 'densenet169'
     n_epoch = 5
     # Import pre-trained NN model 
-    model = getattr(models, model_name)(pretrained=False)
+    model = getattr(models, model_name)(pretrained=True)
     
     # Freeze parameters that we don't need to re-train 
     for param in model.parameters():
-        param.requires_grad = True
+        param.requires_grad = False
         
 #     Make classifier
 #     n_in = next(model.classifier.modules()).in_features
@@ -94,8 +94,8 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
             images, labels = images.to(device), labels.to(device)
 
             steps += 1
-
-            #optimizer.zero_grad()
+            #comment out when needed
+            optimizer.zero_grad()
 
             output = model.forward(images)
             loss = criterion(output, labels)
