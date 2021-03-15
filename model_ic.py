@@ -21,29 +21,36 @@ class NN_Classifier(nn.Module):
             hidden_layers: list of integers, the sizes of the hidden layers
             drop_p: float between 0 and 1, dropout probability
         '''
-        super().__init__()
-        # Add the first layer, input to a hidden layer
-        self.hidden_layers = nn.ModuleList([nn.Linear(input_size, hidden_layers[0])])
-        
-        # Add a variable number of more hidden layers
-        layer_sizes = zip(hidden_layers[:-1], hidden_layers[1:])
-        self.hidden_layers.extend([nn.Linear(h1, h2) for h1, h2 in layer_sizes])
-        
-        self.output = nn.Linear(hidden_layers[-1], output_size)
-        
-        self.dropout = nn.Dropout(p=drop_p)
+        super(Net, self).__init__()
+        self.conv1 = nn.Conv2d(1, 32, 3, 1)
+        self.conv2 = nn.Conv2d(32, 64, 3, 1)
+        self.dropout1 = nn.Dropout(0.25)
+        self.dropout2 = nn.Dropout(0.5)
+        self.fc1 = nn.Linear(9216, 128)
+        self.fc2 = nn.Linear(128, 10)
         
     def forward(self, x):
-        ''' Forward pass through the network, returns the output logits '''
-        
-        # Forward through each layer in `hidden_layers`, with ReLU activation and dropout
-        for linear in self.hidden_layers:
-            x = F.relu(linear(x))
-            x = self.dropout(x)
-        
-        x = self.output(x)
-        
-        return F.log_softmax(x, dim=1)
+        print("Input:", x.shape)
+        x = self.conv1(x)
+        print("After conv1:", x.shape)
+        x = F.relu(x)
+        x = self.conv2(x)
+        print("After conv2:", x.shape)
+        x = F.relu(x)
+        x = F.max_pool2d(x, 2)
+        print("After max_pool2d:", x.shape)
+        x = self.dropout1(x)
+        x = torch.flatten(x, 1)
+        print("After flatten:", x.shape)
+        x = self.fc1(x)
+        print("After fc1:", x.shape)
+        x = F.relu(x)
+        x = self.dropout2(x)
+        x = self.fc2(x)
+        print("After fc2:", x.shape)
+        output = F.log_softmax(x, dim=1)
+        print("Output:", output.shape)
+        return output
 
 # Define validation function 
 def validation(model, testloader, criterion, device):
@@ -65,24 +72,28 @@ def validation(model, testloader, criterion, device):
 # Define NN function
 def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, validloader, train_data,testloader):
     n_epoch = 5
-    model_name = "densenet169"
-    # Import pre-trained NN model 
-    model = getattr(models, model_name)(pretrained=True)
+    model = NN_Classifier.to(device)
     
-    # Freeze parameters that we don't need to re-train 
-    for param in model.parameters():
-        param.requires_grad = False
+#     model_name = "densenet169"
+#     # Import pre-trained NN model 
+#     model = getattr(models, model_name)(pretrained=True)
+    
+#     # Freeze parameters that we don't need to re-train 
+#     for param in model.parameters():
+#         param.requires_grad = False
         
-    # Make classifier
-    n_in = next(model.classifier.modules()).in_features
-    n_out = len(labelsdict) 
-    model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
+#     # Make classifier
+#     n_in = next(model.classifier.modules()).in_features
+#     n_out = len(labelsdict) 
+#     model.classifier = NN_Classifier(input_size=n_in, output_size=n_out, hidden_layers=n_hidden)
     
-    # Define criterion and optimizer
-    criterion = nn.NLLLoss()
-    optimizer = optim.Adam(model.classifier.parameters(), lr = lr)
+#     # Define criterion and optimizer
+#     criterion = nn.NLLLoss()
+#     optimizer = optim.Adam(model.classifier.parameters(), lr = lr)
 
     model.to(device)
+    
+    
     start = time.time()
 
     epochs = n_epoch
