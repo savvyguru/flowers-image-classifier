@@ -1,4 +1,3 @@
-
 import numpy as np
 import time
 from collections import OrderedDict
@@ -67,7 +66,7 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
     model_name = 'densenet169'
     n_epoch = 5
     # Import pre-trained NN model 
-    model = getattr(models, model_name)(pretrained=True)
+    model = getattr(models, model_name)(pretrained=False)
     
     # Freeze parameters that we don't need to re-train 
     for param in model.parameters():
@@ -96,7 +95,7 @@ def make_NN(n_hidden, n_epoch, labelsdict, lr, device, model_name, trainloader, 
 
             steps += 1
 
-            optimizer.zero_grad()
+            #optimizer.zero_grad()
 
             output = model.forward(images)
             loss = criterion(output, labels)
