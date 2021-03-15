@@ -11,7 +11,7 @@ from torchvision import models
 
 # Define classifier class
 class NN_Classifier(nn.Module):
-    def __init__(self):
+    def __init__(self,output_size):
         ''' Builds a feedforward network with arbitrary hidden layers.
         
             Arguments
@@ -27,7 +27,7 @@ class NN_Classifier(nn.Module):
         self.dropout1 = nn.Dropout(0.25)
         self.dropout2 = nn.Dropout(0.5)
         self.fc1 = nn.Linear(774400, 128)
-        self.fc2 = nn.Linear(128, 10)
+        self.fc2 = nn.Linear(128, output_size)
         
     def forward(self, x):
         print("Input:", x.shape)
